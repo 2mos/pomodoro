@@ -68,31 +68,35 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
+
     return LayoutBuilder(builder: (context, constraints) {
+      var screenWidth = constraints.maxWidth;
+
       return Scaffold(
         body: Row(
           children: [
-            SafeArea(
-              child: NavigationRail(
-                extended: constraints.maxWidth >= 600,
-                destinations: [
-                  NavigationRailDestination(
-                    icon: Icon(Icons.home),
-                    label: Text('Home'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Favorites'),
-                  ),
-                ],
-                selectedIndex: selectedIndex,
-                onDestinationSelected: (value) {
-                  setState(() {
-                    selectedIndex = value;
-                  });
-                },
+            if (screenWidth >= 600)
+              SafeArea(
+                child: NavigationRail(
+                  extended: false,
+                  destinations: [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.home),
+                      label: Text('Home'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.favorite),
+                      label: Text('Favorites'),
+                    ),
+                  ],
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      selectedIndex = value;
+                    });
+                  },
+                ),
               ),
-            ),
             Expanded(
               child: Container(
                 color: Theme.of(context).colorScheme.primaryContainer,
@@ -101,6 +105,27 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+        bottomNavigationBar: (screenWidth) < 600
+            ? NavigationBar(
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.favorite),
+                    label: 'Favorites',
+                  ),
+                ],
+                selectedIndex: selectedIndex,
+                onDestinationSelected: (value) {
+                  setState(() {
+                    selectedIndex = value;
+                  });
+                },
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              )
+            : null,
       );
     });
   }
