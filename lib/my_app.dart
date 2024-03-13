@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.blue,
               primary: Colors.black,
-              primaryContainer: Color(0xFFE5E5E5),
+              primaryContainer: Color(0xFFF5F5F5),
               surface: Colors.white),
         ),
         darkTheme: ThemeData(
