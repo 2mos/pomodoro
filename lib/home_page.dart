@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: page,
               ),
             ),
-            if (screenWidth <= 600)
+            if (screenWidth < 600)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: NavigationBar(
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
                 ),
               )
-            else if (screenWidth > 600)
+            else if (screenWidth >= 600)
               Positioned(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
