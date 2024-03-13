@@ -6,22 +6,55 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>()!;
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.system;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'Pomodoro',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
+        darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+              brightness: Brightness.dark,
+              primary: Colors.white,
+              primaryContainer: Color(0xFF171717),
+              surface: Color(0xFF262626),
+            )),
+        themeMode: _themeMode,
         home: MyHomePage(),
       ),
     );
+  }
+
+  void changeTheme(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
+
+  void toggleTheme() {
+    setState(() {
+      _themeMode =
+          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
   }
 }
 
@@ -71,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LayoutBuilder(builder: (context, constraints) {
       var screenWidth = constraints.maxWidth;
+      final theme = Theme.of(context);
 
       return Scaffold(
         body: Row(
@@ -81,12 +115,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   extended: false,
                   destinations: [
                     NavigationRailDestination(
-                      icon: Icon(Icons.home),
+                      icon: Icon(Icons.timer),
                       label: Text('Home'),
                     ),
                     NavigationRailDestination(
-                      icon: Icon(Icons.favorite),
-                      label: Text('Favorites'),
+                      icon: Icon(Icons.edit),
+                      label: Text('Settings'),
                     ),
                   ],
                   selectedIndex: selectedIndex,
@@ -99,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             Expanded(
               child: Container(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: theme.colorScheme.primaryContainer,
                 child: page,
               ),
             ),
@@ -109,12 +143,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ? NavigationBar(
                 destinations: const [
                   NavigationDestination(
-                    icon: Icon(Icons.home),
+                    icon: Icon(Icons.timer),
                     label: 'Home',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.favorite),
-                    label: 'Favorites',
+                    icon: Icon(Icons.edit),
+                    label: 'Settings',
                   ),
                 ],
                 selectedIndex: selectedIndex,
@@ -144,6 +178,11 @@ class FavoritesPage extends StatelessWidget {
 
     return ListView(
       children: [
+        ElevatedButton(
+            onPressed: () {
+              MyApp.of(context).toggleTheme();
+            },
+            child: Text('Sex')),
         Padding(
           padding: const EdgeInsets.all(20),
           child: Text('You have '
@@ -163,7 +202,11 @@ class GeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    final theme = Theme.of(context);
     var pair = appState.current;
+    final style = theme.textTheme.bodyLarge!.copyWith(
+      color: theme.colorScheme.onSurface,
+    );
 
     IconData icon;
     if (appState.favorites.contains(pair)) {
@@ -186,14 +229,20 @@ class GeneratorPage extends StatelessWidget {
                   appState.toggleFavorite();
                 },
                 icon: Icon(icon),
-                label: Text('Like'),
+                label: Text(
+                  'Like',
+                  style: style,
+                ),
               ),
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   appState.getNext();
                 },
-                child: Text('Next'),
+                child: Text(
+                  'Next',
+                  style: style,
+                ),
               ),
             ],
           ),
@@ -215,11 +264,11 @@ class BigCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
+      color: theme.colorScheme.onSurface,
     );
 
     return Card(
-      color: theme.colorScheme.primary,
+      color: theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Text(
