@@ -16,10 +16,8 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (selectedIndex) {
       case 0:
         page = PomodoroPage();
-        break;
       case 1:
         page = SettingsPage();
-        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -75,40 +73,42 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               )
             else if (screenWidth >= 600)
-              Positioned(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(children: [
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: IconButton(
-                        style: btnStyle,
-                        icon: Icon(Icons.timer_outlined),
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                          });
-                        },
+              SafeArea(
+                child: Positioned(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(children: [
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: IconButton(
+                          style: btnStyle,
+                          icon: Icon(Icons.timer_outlined),
+                          onPressed: () {
+                            setState(() {
+                              selectedIndex = 0;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: IconButton(
-                        style: btnStyle,
-                        icon: Icon(Icons.settings),
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-                          });
-                        },
+                      SizedBox(
+                        width: 10,
                       ),
-                    ),
-                  ]),
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: IconButton(
+                          style: btnStyle,
+                          icon: Icon(Icons.settings),
+                          onPressed: () {
+                            setState(() {
+                              selectedIndex = 1;
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
               ),
           ],

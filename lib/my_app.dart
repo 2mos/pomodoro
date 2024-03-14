@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
+  // static var time = { 'hours': 0, 'mins': 0};
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +29,18 @@ class _MyAppState extends State<MyApp> {
               seedColor: Colors.blue,
               primary: Colors.black,
               primaryContainer: Color(0xFFF5F5F5),
+              secondaryContainer: Color(0xFFE5E5E5),
               surface: Colors.white),
         ),
         darkTheme: ThemeData(
             useMaterial3: true,
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              brightness: Brightness.dark,
-              primary: Colors.white,
-              primaryContainer: Color(0xFF171717),
-              surface: Color(0xFF262626),
-            )),
+                seedColor: Colors.blue,
+                brightness: Brightness.dark,
+                primary: Colors.white,
+                primaryContainer: Color(0xFF171717),
+                surface: Color(0xFF262626),
+                secondaryContainer: Color(0xFF323232))),
         themeMode: _themeMode,
         debugShowCheckedModeBanner: false,
         home: MyHomePage(),
